@@ -1,38 +1,50 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useState} from 'react';
+import './App.css';
 
-function App() {
-    const [count, setCount] = useState(0)
+const App = () => {
+    const [file, setFile] = useState<File | null>(null);
 
-    const handleConnexion = () => {
-        fetch("http://localhost:8080/").then(r => console.log(r));
-    }
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.files);
+        if (event.target.files) {
+            setFile(event.target?.files[0]);
+        }
+    };
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        if (!file) {
+            alert('Veuillez sélectionner un fichier à télécharger');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch("http://localhost:8080/upload", {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Fichier téléchargé avec succès:', result);
+            } else {
+                console.error('Erreur lors du téléchargement du fichier');
+            }
+        } catch (error) {
+            console.error('Erreur de réseau:', error);
+        }
+    };
+
     return (
-        <>
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo"/>
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={handleConnexion}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-        </>
-    )
-}
+        <form onSubmit={handleSubmit}>
+            <input type="file" onChange={handleFileChange} />
+            <button type="submit">Télécharger</button>
+        </form>
+    );
+};
 
-export default App
+export default App;
