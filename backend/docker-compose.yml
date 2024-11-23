@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  express-typescript-boilerplate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    container_name: express-typescript-boilerplate
+    ports:
+      - '8080:8080'
+    command: npm run dev
