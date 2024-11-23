@@ -6,9 +6,20 @@ services:
       context: .
       dockerfile: ./backend/Dockerfile
     volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - ./backend:/back
+      - /back/node_modules
     container_name: backend
     ports:
       - '8080:8080'
+    command: npm run dev
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - ./frontend:/front
+      - /front/node_modules
+    container_name: frontend
+    ports:
+      - '3000:3000'
     command: npm run dev

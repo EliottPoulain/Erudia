@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 RUN addgroup app && adduser -S -G app app
 
-WORKDIR /app
+WORKDIR /back
 
 COPY ./backend/package*.json ./backend/tsconfig.json ./
 
