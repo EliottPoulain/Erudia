@@ -4,7 +4,7 @@ RUN addgroup app && adduser -S -G app app
 
 WORKDIR /app
 
-COPY package*.json tsconfig.json ./
+COPY ./backend/package*.json ./backend/tsconfig.json ./
 
 RUN npm install
 

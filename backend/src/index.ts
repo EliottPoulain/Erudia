@@ -6,7 +6,7 @@ const port: number = 8080;
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response): void => {
-    res.send('Hello woooofsdlkfslfkj!');
+    res.send('Hello woorld!');
 });
 
 app.listen(port, "0.0.0.0", (): void => {
